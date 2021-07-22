@@ -9,7 +9,7 @@ namespace ProjectPractice
     {
         static void Main(string[] args)
         {
-            
+
 
             //UI
             // Console.WriteLine("╔═════════════════════╗");
@@ -55,7 +55,7 @@ namespace ProjectPractice
 
             if (width <= 0) width += Console.WindowWidth;
 
-            int allButtonsWidth = captions.Sum(c => c.Length) + captions.Length *4 + captions.Length - 1;
+            int allButtonsWidth = captions.Sum(c => c.Length) + captions.Length * 4 + captions.Length - 1;
 
             int xPosition = width / 2 - allButtonsWidth / 2;
 
@@ -72,7 +72,7 @@ namespace ProjectPractice
             int oldY = Console.CursorTop;
             ColorSheme sheme = isActive ? ColorSheme.ActiveButtonSheme : ColorSheme.FromConsole();
 
-            sheme.Apply(() => 
+            sheme.Apply(() =>
             {
 
                 Console.CursorLeft = xPosition;
@@ -101,9 +101,9 @@ namespace ProjectPractice
         }
 
         private static void PrintMessage(string message, ColorSheme sheme)
- 
+
         {
-            foreach (var line in SplitText(message)) 
+            foreach (var line in SplitText(message))
             {
                 Console.Write("║ ");
                 Console.CursorLeft = 2;
@@ -170,9 +170,9 @@ namespace ProjectPractice
 
                 if (maxLength + index >= text.Length)
                     break;
-                
+
                 index = text.LastIndexOf(' ', index + maxLength);
-            } 
+            }
 
             result.Add(text.Substring(startIndex));
             return result;
