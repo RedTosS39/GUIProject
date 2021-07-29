@@ -44,6 +44,7 @@ namespace ProjectPractice.Forms
                 if (decimal.TryParse(Text, out decimal digit) && digit >= Min && digit <= Max)
                 {
                     Commit?.Invoke(digit);
+                    return true;
                 }
             }
             else if(int.TryParse(Text, out int i) && i >= Min && i <= Max) 

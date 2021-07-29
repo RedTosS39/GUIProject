@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectPractice.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -21,6 +22,14 @@ namespace ProjectPractice
             if (description is not null)
                 return description.Description;
             return "";
+        }
+
+        public static string GetHint(this PropertyInfo property)
+        {
+            HintAttribute hint = property.GetCustomAttribute<HintAttribute>();
+            if (hint is not null) return hint.Hint;
+
+            return property.Name;
         }
 
         public static ColorScheme GetSheme(this MessageType type)

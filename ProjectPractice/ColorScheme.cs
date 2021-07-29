@@ -23,6 +23,6 @@ namespace ProjectPractice
             => new ColorScheme(ConsoleColor.White, ConsoleColor.Black);
 
         public static ColorScheme InputTextScheme
-            => new ColorScheme(ConsoleColor.White, ConsoleColor.DarkYellow);
+            => new ColorScheme(ConsoleColor.White, ConsoleColor.DarkGray);
     }
 }

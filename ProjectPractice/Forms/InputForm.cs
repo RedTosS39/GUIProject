@@ -42,22 +42,29 @@ namespace ProjectPractice.Forms
         {
             if (property.PropertyType.Name == nameof(String))
             {
-                return new TextElement(property.Name, value => property.SetValue(Value, value));
+                return new TextElement(property.GetHint(), value => property.SetValue(Value, value));
             }
 
             else if (property.PropertyType.Name == nameof(Int32))
             {
-                return new DigitElement(property.Name, (int value) => property.SetValue(Value, value));
+                return new DigitElement(property.GetHint(), (int value) => property.SetValue(Value, value));
             }
 
             else if (property.PropertyType.Name == nameof(Decimal))
             {
-                return new DigitElement(property.Name, (decimal value) => property.SetValue(Value, value));
+                return new DigitElement(property.GetHint(), (decimal value) => property.SetValue(Value, value));
             }
+
+            else if (property.PropertyType.Name == nameof(DateTime))
+            {
+                return new DateElement(property.GetHint(), value => 
+                    property.SetValue(Value, value));
+            }
+
             return null;
         }
 
-        public void Show() 
+        public bool Show() 
         {
             Printer.PrintTopEdge();
 
@@ -75,7 +82,18 @@ namespace ProjectPractice.Forms
 
             Printer.PrintBottomEdge();
 
-            Console.ReadKey();
+            (int oldX, int oldY) = Console.GetCursorPosition();
+
+            foreach (TextElement elements in Elements)
+            {
+                Console.SetCursorPosition(HintLength + 4, elements.Y);
+                if (!elements.Input())
+                    return false;
+            }
+
+            Console.SetCursorPosition(oldX, oldY);
+
+            return true;
         }
     }
 }

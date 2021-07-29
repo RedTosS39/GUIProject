@@ -29,7 +29,7 @@ namespace ProjectPractice.Forms
             Commit = commit;
         }
 
-        public void Input() 
+        public bool Input() 
         {
             var minPosition = Console.CursorLeft;
             int maxLegth = Console.WindowWidth - Console.CursorLeft - 2;
@@ -38,6 +38,9 @@ namespace ProjectPractice.Forms
             do
             {
                 keyInfo = Console.ReadKey(true);
+
+                if (keyInfo.Key == ConsoleKey.Escape)
+                    return false;
 
                 if (keyInfo.Key == ConsoleKey.Backspace)
                 {
@@ -56,6 +59,9 @@ namespace ProjectPractice.Forms
                 }
 
             } while (keyInfo.Key != ConsoleKey.Enter || !CanCommit());
+
+            Commit?.Invoke(Text);
+            return true;
         }
 
         public virtual bool FilterChar(char ch) => true;

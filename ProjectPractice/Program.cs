@@ -43,7 +43,12 @@ namespace ProjectPractice
             // }
 
             InputForm<Car> form = new("Введите Информацию о машине");
-            form.Show();
+
+            if (form.Show())
+            { 
+                var car = form.Value;
+
+            }
 
         }
 
