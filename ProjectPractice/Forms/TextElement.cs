@@ -64,7 +64,7 @@ namespace ProjectPractice.Forms
             return true;
         }
 
-        public virtual bool FilterChar(char ch) => true;
+        public virtual bool FilterChar(char ch) => ch != '\r';
 
         public virtual bool CanCommit() => true;
     }

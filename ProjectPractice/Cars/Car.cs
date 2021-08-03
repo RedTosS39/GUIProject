@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectPractice
 {
-    class Car
+    public class Car
     {
         [Hint("Введите бренд")]
         public string Brand { get; set; }
@@ -29,5 +29,10 @@ namespace ProjectPractice
         public DateTime ReleaseDate { get; set; }
 
         public Position CurrentPosition { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Brand} - {ReleaseDate:dd.MM.yyyy} {CurrentPosition}";
+        }
     }
 }

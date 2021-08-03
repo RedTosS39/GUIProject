@@ -66,6 +66,9 @@ namespace ProjectPractice.Forms
 
         public bool Show() 
         {
+
+            Printer.Clear();
+
             Printer.PrintTopEdge();
 
             Printer.PrintEmptyLine();

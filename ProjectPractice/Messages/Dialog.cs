@@ -28,6 +28,8 @@ namespace ProjectPractice
 
         public Button Show()
         {
+            Printer.Clear();
+
             Printer.PrintTopEdge();
             Printer.PrintEmptyLine();
 
@@ -76,6 +78,8 @@ namespace ProjectPractice
 
         public static Button ShowQuestion(string message, MessageType type = MessageType.Info, params Button[] buttons)
         {
+            if (buttons is null || buttons.Length == 0)
+                buttons = new Button[] { Button.Yes, Button.No };
            return new Dialog(message, type, buttons)
                 .Show();
         }
@@ -97,7 +101,7 @@ namespace ProjectPractice
 
             for (int i = 0; i < captions.Length; i++)
             {
-                Printer.PrintButton(captions[i], xPosition, Console.CursorTop - 3, i == ActiveButtonIndex);
+                Printer.PrintButton(captions[i], xPosition, Lines.Length + 3, i == ActiveButtonIndex);
                 xPosition += captions[i].Length + 5;
             }
         }

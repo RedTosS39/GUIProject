@@ -8,6 +8,13 @@ namespace ProjectPractice
 {
     public class ConsolePrinter
     {
+
+        public void Clear()
+        {
+            Console.Clear();
+        }
+
+
         public void PrintButton(string caption, int xPosition, int yPosition, bool isActive)
         {
             int oldX = Console.CursorLeft;

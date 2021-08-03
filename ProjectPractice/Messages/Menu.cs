@@ -8,6 +8,7 @@ namespace ProjectPractice
 {
     public class Menu : Message
     {
+
         private int _selectedIndex;
 
         public string[] Elements { get; }
@@ -19,8 +20,8 @@ namespace ProjectPractice
             {
                 if (value < 0)
                     _selectedIndex = Elements.Length - 1;
-                else if (value > 0)
-                    _selectedIndex = Elements.Length + 1;
+                else if (value >= Elements.Length)
+                    _selectedIndex = 0;
                 else
                     _selectedIndex = value;
             }
@@ -35,6 +36,8 @@ namespace ProjectPractice
 
         public int Show()
         {
+            Printer.Clear();
+
             Printer.PrintTopEdge();
             Printer.PrintEmptyLine();
             Printer.PrintMessage(Lines, Type.GetSheme());
@@ -89,3 +92,4 @@ namespace ProjectPractice
 
     }
 }
+ 

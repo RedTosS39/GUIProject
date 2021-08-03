@@ -9,9 +9,13 @@ namespace ProjectPractice.Orders
 {
     public class Order
     {
+   
+
         private Order OldOrder { get; set; }
 
         public Guid Id { get; set; }
+        
+        public int Number { get; }
 
         public Position From { get; private set; }
 
@@ -21,9 +25,20 @@ namespace ProjectPractice.Orders
 
         public OrderState State { get; private set; }
 
-        public Order(Position from, Position to)
+
+
+        public Order()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid();    
+        }
+
+        public Order(Numerator numerator = null) : base()
+        {
+            Number = numerator.GetNumber(typeof(Order));
+        }
+
+        public Order(Position from, Position to) : base()
+        {
             From = from;
             To = to;
         }
@@ -73,6 +88,11 @@ namespace ProjectPractice.Orders
                 yield return current;
                 current = current.OldOrder;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Заказ №{Id} ({State})";
         }
 
     }
