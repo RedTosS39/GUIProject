@@ -32,7 +32,7 @@ namespace ProjectPractice
             return property.Name;
         }
 
-        public static ColorScheme GetSheme(this MessageType type)
+        public static ColorScheme GetScheme(this MessageType type)
         {
             switch (type)
             {

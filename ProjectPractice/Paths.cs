@@ -1,42 +1,48 @@
-﻿using System;
+﻿using ProjectPractice.Orders;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectPractice
 {
     public class Paths
     {
-        public string BaseDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ProjectPractice");
+        public string BaseDirectory { get; } = 
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ProjectPractice");
 
-        public  string CarDirectory { get; }
 
-        public string OrderDirectory { get; }
+        private Dictionary<Type, string> _Directories { get; }
 
 
         public Paths()
-        { 
-            CarDirectory = Path.Combine(BaseDirectory, "Cars");
+        {
+            _Directories = new Dictionary<Type, string>
+            {
+                { typeof(Car), Path.Combine(BaseDirectory, "Cars") },
+                { typeof(Order), Path.Combine(BaseDirectory, "Orders") },
+                { typeof(AssignedOrder), Path.Combine(BaseDirectory, "AssignedOrders") },
+            };
+            _CheckDirectories();
 
-            OrderDirectory = Path.Combine(BaseDirectory, "Orders");
-
-            CheckDirectories();
         }
 
-        private void CheckDirectories()
+
+        public string GetDirectory<T>()
+        {
+            Type t = typeof(T);
+            return _Directories[t];
+        }
+
+        private void _CheckDirectories()
         {
             if (!Directory.Exists(BaseDirectory))
                 Directory.CreateDirectory(BaseDirectory);
 
-            if (!Directory.Exists(CarDirectory))
-                Directory.CreateDirectory(CarDirectory);
-
-            if (!Directory.Exists(OrderDirectory))
-                Directory.CreateDirectory(OrderDirectory);
+            foreach (string filename in _Directories.Values)
+            {
+                if (!Directory.Exists(filename))
+                    Directory.CreateDirectory(filename);
+            }
         }
-    }
-
-    
+    }   
 }

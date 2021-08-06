@@ -33,7 +33,7 @@ namespace ProjectPractice
             Printer.PrintTopEdge();
             Printer.PrintEmptyLine();
 
-            Printer.PrintMessage(Lines, Type.GetSheme());
+            Printer.PrintMessage(Lines, Type.GetScheme());
 
             Printer.PrintEmptyLine();
             Printer.PrintEmptyLine();
@@ -85,8 +85,10 @@ namespace ProjectPractice
         }
 
 
-        public void PrintButtons(int width = 0)
+        public void PrintButtons(int width = 0, int y = 0)
         {
+            if (y == 0)
+                y = Lines.Length + 3;
 
             var captions = Buttons.Select(btn => btn.ToString()).ToArray();
 
@@ -101,7 +103,8 @@ namespace ProjectPractice
 
             for (int i = 0; i < captions.Length; i++)
             {
-                Printer.PrintButton(captions[i], xPosition, Lines.Length + 3, i == ActiveButtonIndex);
+               
+                Printer.PrintButton(captions[i], xPosition, y, i == ActiveButtonIndex); ;
                 xPosition += captions[i].Length + 5;
             }
         }

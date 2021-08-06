@@ -1,4 +1,5 @@
-﻿using ProjectPractice.Forms;
+﻿using GUIProject.Forms;
+using ProjectPractice.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,15 @@ namespace ProjectPractice.Navigation
 
         private const string _CAR_PARK = "Парк Машин";
 
-        public List<Car> Cars { get; }
+        public OurData Data { get; set; }
 
-        public CarMenu(List<Car> cars) : base(_CAR_PARK)
+        public View<Car> View { get; }
+
+
+
+        public CarMenu(OurData data) : base(_CAR_PARK)
         {
-            Cars = cars;
-
+            Data = data;
             AddItems(
                 ("Просмотр машин", ViewCars),
                 ("Ввод новой машины", InputNewCar),
@@ -28,7 +32,12 @@ namespace ProjectPractice.Navigation
         public void ViewCars()
         {
             var newMenu = new NavigationMenu<Car>("Все машины, которые у нас есть");
-            newMenu.BindItems(Cars, selectAction: c => newMenu.Show());
+            newMenu.BindItems(Data.GetData<Car>(), selectAction: c =>
+            {
+                View.Show(c);
+                newMenu.Show();
+            });
+
             newMenu.AddItems(("Возврат", Empty));
             newMenu.Show();
         }
@@ -38,7 +47,8 @@ namespace ProjectPractice.Navigation
             var carForm = new InputForm<Car>("Введите информацию о новой машине");
             if (carForm.Show())
             {
-                Cars.Add(carForm.Value);
+                Data.GetData<Car>().Add(carForm.Value);
+                Data.SaveItem(carForm.Value);
             }
             this.Show();
         }

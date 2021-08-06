@@ -27,8 +27,6 @@ namespace ProjectPractice.Navigation
                 ("Добавить заказ", AddOrder),
                 ("Назначение заказа", SetAssignedOrder),
                 ("Выход из программы", ExitQuastion));
-
-
         }
 
 
@@ -45,8 +43,9 @@ namespace ProjectPractice.Navigation
 
             if (orderForm.Show())
             {
-                var newOrder = orderForm.Value;
-                Data.Orders.Add(newOrder);
+                Order newOrder = orderForm.Value;
+                Data.GetData<Order>().Add(newOrder);
+                Data.SaveItem(newOrder);
                 Dialog.ShowMessage("Создан новый заказ" + newOrder);
                 Show();
             }
@@ -55,26 +54,29 @@ namespace ProjectPractice.Navigation
 
         public void SetAssignedOrder()
         {
-            var orderMenu = new Menu("Введите заказ", Data.Orders.Select(o => o.ToString()).Concat(new[] { "Назад" }).ToArray());
+            var orderMenu = new Menu("Выберите заказ", Data.GetData<Order>().Select(o => o.ToString()).Concat(new[] { "Назад" }).ToArray());
             var index = orderMenu.Show();
-            if (index == Data.Orders.Count)
+            if (index == Data.GetData<Order>().Count)
             {
                 Show();
                 return;
             }
 
-            var selectedOrder = Data.Orders[index];
+            var selectedOrder = Data.GetData<Order>()[index];
 
-            var carSubMenu = new Menu("Все машины в наличии ", Data.Cars.Select(c => c.ToString()).Concat(new[] { "Возврат" }).ToArray());
+            var carSubMenu = new Menu("Все машины, которые у нас есть", Data.GetData<Car>().Select(c => c.ToString()).Concat(new[] { "Назад" }).ToArray());
+
             index = carSubMenu.Show();
-            if (index == Data.Cars.Count)
+            
+            if (index == Data.GetData<Car>().Count)
             {
                 Show();
                 return;
             }
+ 
+            var assignedOrder = new AssignedOrder(Data.GetData<Car>()[index], selectedOrder);
+            Data.SaveItem(assignedOrder);
 
-
-            var assignedOrder = new AssignedOrder(Data.Cars[index], selectedOrder);
             Dialog.ShowMessage(assignedOrder.ToDisplayString());
             Show();
 

@@ -1,86 +1,75 @@
 ﻿using ProjectPractice.Cars;
+using ProjectPractice.Common;
 using ProjectPractice.Orders;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ProjectPractice
 {
     public class OurData
     {
-        public List<Car> Cars { get; private set; }
+        private Dictionary<Type, IList> _Data { get; }
 
-        public  List<Order> Orders { get; private set; }
+        public Paths Paths { get; }
+        public Numerator Numerator { get; }
 
-        public  List<AssignedOrder> AssignedOrder { get; private set; }
-
-        public OurData()
+        public OurData(Paths paths, Numerator numerator)
         {
-            Cars = LoadCars(); 
-            Orders = LoadOrders();
-            AssignedOrder = LoadAssignedOrder();
+            _Data = new Dictionary<Type, IList>();
+            Paths = paths;
+            Numerator = numerator;
         }
 
-        private static List<AssignedOrder> LoadAssignedOrder()
+        public IList<T> GetData<T>()
         {
-            return new List<AssignedOrder>();
+            Type t = typeof(T);
+            return (IList<T>)_Data[t];
         }
 
-        private static List<Order> LoadOrders()
+        public void LoadData()
         {
-            return new List<Order>();
+
+            _Data.Add(typeof(Car), _Load<Car>());
+            _Data.Add(typeof(Order), _Load<Order>());
+            _Data.Add(typeof(AssignedOrder), _Load<AssignedOrder>());
+
         }
 
-        private static List<Car> LoadCars()
+
+        private List<T> _Load<T>() where T : IHaveId
         {
-            return new List<Car>
+            string directory = Paths.GetDirectory<T>();
+            string[] files = Directory.GetFiles(directory);
+            return files
+                .Select(filename => File.ReadAllText(filename, Encoding.Default))
+                .Select(text => JsonSerializer.Deserialize<T>(text, GetOptions()))
+                .ToList();
+        }
+
+        public void SaveItem<T>(T item) where T : IHaveId
+        {
+            string filename = Path.Combine(Paths.GetDirectory<T>(), item.Id + ".json");
+            if (item is IHaveNumber numbered)
             {
-                new  Car
-                {
-                    Brand = "Car1",
-                    BaseCpnsimption = 0.1M,
-                    CurrentPosition = new Position(12, 19),
-                    Fuel = 45,
-                    PlateNumber = "x1141xx",
-                    ReleaseDate = new DateTime(2001, 2, 2)
-                },
+                numbered.Number = Numerator.GetNumber(item.GetType());
+            }
+            File.WriteAllText(filename, JsonSerializer.Serialize(item, GetOptions()), Encoding.Default);
+        }
 
-                new  Car
-                {
-                    Brand = "Car2",
-                    BaseCpnsimption = 0.2M,
-                    CurrentPosition = new Position(5, 34),
-                    Fuel = 45,
-                    PlateNumber = "x1132xx",
-                    ReleaseDate = new DateTime(2000, 1, 1)
-                },
-
-
-
-                new  Car
-                {
-                    Brand = "Car3",
-                    BaseCpnsimption = 0.2M,
-                    CurrentPosition = new Position(20, 18),
-                    Fuel = 45,
-                    PlateNumber = "x1111xx",
-                    ReleaseDate = new DateTime(2000, 1, 1)
-                },
-
-                new  Car
-                {
-                    Brand = "Car4",
-                    BaseCpnsimption = 0.2M,
-                    CurrentPosition = new Position(1, 10),
-                    Fuel = 45,
-                    PlateNumber = "x1171xx",
-                    ReleaseDate = new DateTime(2000, 1, 1)
-                }
+        public static JsonSerializerOptions GetOptions()
+        {
+            return new JsonSerializerOptions(JsonSerializerDefaults.General)
+            {
+                Encoder = JavaScriptEncoder.Default
             };
         }
     }
-
     
 }

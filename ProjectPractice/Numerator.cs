@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjectPractice
 {
-    public class Numerator
+    public sealed class Numerator
     {
         private Dictionary<string, int> _Numbers { get; set; }
        
@@ -32,12 +32,14 @@ namespace ProjectPractice
             {
                 var number = _Numbers[name];
                 _Numbers[name]++;
+                _SaveNumbers();
                 return number;
             }
 
             else
             {
                 _Numbers.Add(name, 2);
+                _SaveNumbers();
                 return 1;
             }
         }
@@ -51,7 +53,7 @@ namespace ProjectPractice
         }
 
 
-        public void SaveNumbers()
+        private void _SaveNumbers()
         {
             string jsonString = JsonSerializer.Serialize(_Numbers, _Numbers.GetType(), GetOptions());
             File.WriteAllText(FilePath, jsonString);

@@ -40,7 +40,7 @@ namespace ProjectPractice
 
             Printer.PrintTopEdge();
             Printer.PrintEmptyLine();
-            Printer.PrintMessage(Lines, Type.GetSheme());
+            Printer.PrintMessage(Lines, Type.GetScheme());
 
             Printer.PrintEmptyLine();
 

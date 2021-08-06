@@ -20,11 +20,13 @@ namespace ProjectPractice.Forms
         {
             Value = new T();
 
-            var properties = typeof(T).GetProperties(
-                  BindingFlags.Public 
-                | BindingFlags.Instance 
-                | BindingFlags.SetProperty 
-                | BindingFlags.GetProperty);
+            var properties = typeof(T)
+                 .GetProperties(
+                     BindingFlags.Public |
+                     BindingFlags.Instance |
+                     BindingFlags.SetProperty |
+                     BindingFlags.GetProperty)
+                 .Where(p => p.GetCustomAttribute<InputIgnoreAttribute>() == null);
 
             Elements = properties.Select(p => GetElement(p)).Where(el => el != null).ToArray();
 
@@ -73,7 +75,7 @@ namespace ProjectPractice.Forms
 
             Printer.PrintEmptyLine();
 
-            Printer.PrintMessage(Lines, Type.GetSheme());
+            Printer.PrintMessage(Lines, Type.GetScheme());
 
             Printer.PrintEmptyLine();
 

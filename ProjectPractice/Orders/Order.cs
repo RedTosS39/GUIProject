@@ -1,21 +1,24 @@
 ﻿using ProjectPractice.Cars;
+using ProjectPractice.Common;
 using System;
+using GUIProject.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProjectPractice.Forms;
 
 namespace ProjectPractice.Orders
 {
-    public class Order
+    public class Order : IHaveId, IHaveNumber
     {
-   
 
         private Order OldOrder { get; set; }
 
         public Guid Id { get; set; }
-        
-        public int Number { get; }
+
+        [InputIgnore]
+        public int Number { get; set; }
 
         public Position From { get; private set; }
 
@@ -29,13 +32,9 @@ namespace ProjectPractice.Orders
 
         public Order()
         {
-            Id = Guid.NewGuid();    
+            Id = Guid.NewGuid();
         }
 
-        public Order(Numerator numerator = null) : base()
-        {
-            Number = numerator.GetNumber(typeof(Order));
-        }
 
         public Order(Position from, Position to) : base()
         {
@@ -92,7 +91,7 @@ namespace ProjectPractice.Orders
 
         public override string ToString()
         {
-            return $"Заказ №{Id} ({State})";
+            return $"Заказ № {Number} ({State})";
         }
 
     }

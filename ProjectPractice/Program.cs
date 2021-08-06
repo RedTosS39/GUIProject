@@ -48,12 +48,12 @@ namespace ProjectPractice
             var numerator = new Numerator(paths);
 
             numerator.LoadNumbers();
-            var order = new Order(numerator);
-            numerator.SaveNumbers();
 
+            var data = new OurData(paths, numerator);
+            data.LoadData();
 
-            var data = new OurData();
-            var carMenu = new CarMenu(data.Cars);
+            var carMenu = new CarMenu(data);
+
             new MainMenu(data, carMenu).Show();
         }
 
